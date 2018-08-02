@@ -10,7 +10,7 @@ class Main {
 
 	public static function main(){
 		System.start({
-			title:'003_Drawing_Shapes',
+			title:'003_Drawing_Shapes_And_Text',
 			width:WIDTH,
 			height:HEIGHT
 		},
