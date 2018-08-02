@@ -1,7 +1,6 @@
 package;
 
 import kha.Framebuffer;
-import kha.input.KeyCode;
 import kha.Sound;
 import kha.audio1.Audio;
 import kha.audio1.AudioChannel;
@@ -23,12 +22,5 @@ class Project {
 	}
 
 	public function render(framebuffer:Framebuffer):Void {
-		
-	}
-
-	public function onKeyDown(keyCode:KeyCode):Void {
-	}
-
-	public function onKeyUp(keyCode:KeyCode):Void {
 	}
 }

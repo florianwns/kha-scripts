@@ -1,7 +1,6 @@
 package;
 
 import kha.Framebuffer;
-import kha.input.KeyCode;
 import kha.Assets;
 import kha.Image;
 
@@ -22,11 +21,5 @@ class Project {
 		g.drawScaledImage(image, 240, 0, image.width/2, image.height/2); 
 		g.drawScaledSubImage(image, 0, 0, image.width/2, image.height/2, 240, 157, image.width/2, image.height/2);
 		g.end();
-	}
-
-	public function onKeyDown(keyCode:KeyCode):Void {
-	}
-
-	public function onKeyUp(keyCode:KeyCode):Void {
 	}
 }
