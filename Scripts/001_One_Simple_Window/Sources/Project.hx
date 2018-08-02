@@ -1,20 +1,21 @@
 package;
 
 import kha.Framebuffer;
-import kha.Scheduler;
-import kha.System;
+import kha.input.KeyCode;
 
 class Project {
-	public function new() {
-		System.notifyOnRender(render);
-		Scheduler.addTimeTask(update, 0, 1 / 60);
+	public function new(){
 	}
 
-	function update(): Void {
-		
+	public function update():Void {
 	}
 
-	function render(framebuffer: Framebuffer): Void {
-		
+	public function render(framebuffer:Framebuffer):Void {
+	}
+
+	public function onKeyDown(keyCode:KeyCode):Void {
+	}
+
+	public function onKeyUp(keyCode:KeyCode):Void {
 	}
 }

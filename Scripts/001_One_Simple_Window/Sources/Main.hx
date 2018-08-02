@@ -1,11 +1,27 @@
 package;
 
 import kha.System;
+import kha.Scheduler;
+import kha.Assets;
 
 class Main {
-	public static function main() {
-		System.init({title: "Project", width: 1024, height: 768}, function () {
-			new Project();
+	public static var WIDTH = 1024;
+	public static var HEIGHT = 768;
+
+	public static function main(){
+		System.start({
+			title:'001_One_Simple_Window',
+			width:WIDTH,
+			height:HEIGHT
+		},
+		function(_){
+			Assets.loadEverything(function(){
+				var Project = new Project();
+				Scheduler.addTimeTask(Project.update, 0, 1 / 60);
+				System.notifyOnFrames(function(framebuffer){
+					Project.render(framebuffer[0]);
+				});
+			});
 		});
 	}
 }
