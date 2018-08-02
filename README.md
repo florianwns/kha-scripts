@@ -10,7 +10,7 @@ Merci à [Lewis Leptons](https://www.patreon.com/lewislepton)
 
 
 ### Installation 
-Installer la dernière version de [Haxe](https://haxe.org/download/), puis paramètrer le repertoire d'haxelib avec la ligne de commande  :
+Installer la dernière version de [Haxe](https://haxe.org/download/), puis paramétrer le repertoire d'haxelib avec la ligne de commande  :
 ```
 haxelib setup
 ```
