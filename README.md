@@ -10,8 +10,7 @@ Merci à [Lewis Leptons](https://www.patreon.com/lewislepton)
 
 
 ### Installation 
-Installer la dernière version de [Haxe](https://haxe.org/download/)
-Puis paramètrer le repertoire d'haxelib avec la ligne de commande  :
+Installer la dernière version de [Haxe](https://haxe.org/download/), puis paramètrer le repertoire d'haxelib avec la ligne de commande  :
 ```
 haxelib setup
 ```
@@ -27,9 +26,10 @@ git submodule
 git submodule foreach --recursive git pull origin master
 ```
 
-Dans Kode Studio
+Dans Kode Studio : 
 Fichier -> Préfèrences -> Paramètres 
-ajouter la ligne suivante : 
+
+Ajouter la ligne suivante : 
 ```
 "kha.khaPath": "C:/HaxeToolkit/haxe/lib/kha/git"
 ```
