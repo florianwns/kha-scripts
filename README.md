@@ -11,9 +11,9 @@ Merci à [Lewis Leptons](https://www.patreon.com/lewislepton)
 
 ### Installation 
 Installer la dernière version de [Haxe](https://haxe.org/download/)
-Puis paramètrer Haxe avec la ligne de commande  :
+Puis paramètrer le repertoire d'haxelib avec la ligne de commande  :
 ```
-haxe setup
+haxelib setup
 ```
 
 Installer [Kode Studio](https://github.com/Kode/KodeStudio/releases)
