@@ -50,7 +50,13 @@ F5 -> Pour Débugger
 - https://github.com/Kode/Kha/wiki
 - https://lib.haxe.org/p/kha/
 
+### La communauté : 
+- http://forum.kode.tech/
+- https://www.reddit.com/r/Kha/
+- https://kiwiirc.com/client/ktxsoftware.com/kha
 
+
+ 
  
 
 
