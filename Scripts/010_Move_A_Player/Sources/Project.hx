@@ -3,6 +3,8 @@ package;
 import kha.Framebuffer;
 import kha.input.Keyboard;
 import kha.input.KeyCode;
+import kha.input.Gamepad;
+
 import kha.System;
 import Player;
 
@@ -12,6 +14,7 @@ class Project {
 	public function new(){
 		player = new Player();
 		Keyboard.get().notify(onKeyDown, onKeyUp, null);
+		Gamepad.get().notify(onGamepadAxis, null);
 	}
 
 	public function update():Void {
@@ -76,4 +79,14 @@ class Project {
 			default: return;
 		}
 	}
+
+	public function onGamepadAxis(axis:Int, value:Float){
+		if(axis == 0){
+			player.left = (value <= -0.5);
+			player.right = (value >= 0.5);
+		} else if(axis == 1){
+			player.down = (value <= -0.5);
+			player.up = (value >= 0.5);
+		}
+	} 
 }
