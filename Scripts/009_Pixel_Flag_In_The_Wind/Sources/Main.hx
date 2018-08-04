@@ -10,7 +10,7 @@ class Main {
 
 	public static function main(){
 		System.start({
-			title:'001_One_Simple_Window',
+			title:'009_Pixel_Flag_In_The_Wind',
 			width:WIDTH,
 			height:HEIGHT
 		},
