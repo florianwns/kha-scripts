@@ -4,6 +4,7 @@ import kha.System;
 import kha.Scheduler;
 import kha.Assets;
 
+
 class Main {
 	public static var WIDTH = 1024;
 	public static var HEIGHT = 768;

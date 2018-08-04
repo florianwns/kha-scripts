@@ -3,6 +3,7 @@ package;
 import kha.Framebuffer;
 import kha.input.Keyboard;
 import kha.input.KeyCode;
+import kha.System;
 import Player;
 
 class Project {
@@ -25,6 +26,28 @@ class Project {
 		}else if(player.right){
 			player.x += Math.round(player.speed);
 		}
+
+		bounds();		
+	}
+
+	public function bounds():Void{
+		if(player.x < 0){
+			player.x = 0;
+		}
+		if(player.y < 0){
+			player.y = 0;
+		}
+
+		var windowWidth = System.windowWidth();
+		if(player.x + player.width > windowWidth){
+			player.x = windowWidth - player.width;
+		}
+
+		var windowHeight = System.windowHeight();
+		if(player.y + player.height > windowHeight){
+			player.y = windowHeight - player.height;
+		}
+
 	}
 
 	public function render(framebuffer:Framebuffer):Void {

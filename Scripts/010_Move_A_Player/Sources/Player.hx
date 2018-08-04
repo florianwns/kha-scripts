@@ -14,11 +14,24 @@ class Player{
 	public var left:Bool;
 	public var right:Bool;
 
+	public var width(get,null) = 32;
+	public var height(get,null) = 32;
+
+	public function get_width():Int{
+		return this.width;
+	}
+
+	public function get_height():Int{
+		return this.height;
+	}
+
+
+
 	public function new(){}
 	
 	public function update(){}
 
 	public function render(graphics:Graphics){
-		graphics.fillRect(x,y,32,32);
+		graphics.fillRect(x,y,width, height);
 	}
 }
