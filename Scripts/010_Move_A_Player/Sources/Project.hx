@@ -4,8 +4,8 @@ import kha.Framebuffer;
 import kha.input.Keyboard;
 import kha.input.KeyCode;
 import kha.input.Gamepad;
-
 import kha.System;
+
 import Player;
 
 class Project {
@@ -66,6 +66,7 @@ class Project {
 			case Down  : player.down  = true;
 			case Left  : player.left  = true;
 			case Right : player.right = true;
+			case Escape : System.stop();
 			default: return;
 		}
 	}

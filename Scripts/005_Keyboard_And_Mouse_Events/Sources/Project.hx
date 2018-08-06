@@ -7,6 +7,7 @@ import kha.input.Keyboard;
 import kha.input.KeyCode;
 import kha.graphics2.Graphics;
 import kha.Color;
+import kha.System;
 
 class Project {
 	public var arrows:Array<Bool>;
@@ -72,6 +73,7 @@ class Project {
 			case KeyCode.Right 	: arrows[1] = true;
 			case KeyCode.Down  	: arrows[2] = true;
 			case KeyCode.Left  	: arrows[3] = true;
+			case Escape : System.stop();
 			default: return; // Important 
 		}
 	}
