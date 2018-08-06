@@ -7,7 +7,7 @@ class Player{
 	public var x:Int;
 	public var y:Int;
 	
-	public var speed:Float = 6.0;
+	public var speed:Float = 300.0;
 
 	public var up:Bool;
 	public var down:Bool;

@@ -7,27 +7,31 @@ import kha.input.Gamepad;
 import kha.System;
 
 import Player;
+import Timer;
 
 class Project {
 	public var player:Player;
+	public var timer:Timer;
 
 	public function new(){
 		player = new Player();
+		timer = new Timer();
 		Keyboard.get().notify(onKeyDown, onKeyUp, null);
 		Gamepad.get().notify(onGamepadAxis, null);
 	}
 
 	public function update():Void {
+		timer.update();
 		if(player.up){
-			player.y -= Math.round(player.speed);
+			player.y -= Math.round(player.speed * timer.delta);
 		}else if(player.down){
-			player.y += Math.round(player.speed);
+			player.y += Math.round(player.speed * timer.delta);
 		}
 
 		if(player.left){
-			player.x -= Math.round(player.speed);
+			player.x -= Math.round(player.speed * timer.delta);
 		}else if(player.right){
-			player.x += Math.round(player.speed);
+			player.x += Math.round(player.speed * timer.delta);
 		}
 
 		bounds();		
@@ -57,6 +61,7 @@ class Project {
 		var graphics = framebuffer.g2;
 		graphics.begin();
 		player.render(graphics);
+		timer.render(graphics);
 		graphics.end();
 	}
 
