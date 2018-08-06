@@ -33,13 +33,13 @@ class Project {
 		while(i > 0) {
 			var block = arBlock[--i];
 			// translation at center and block rotation
-			graphics.transformation = new FastMatrix3(
+			graphics.pushTransformation(new FastMatrix3(
 				Math.cos(block.angle), -Math.sin(block.angle), center.x,
 				Math.sin(block.angle), Math.cos(block.angle), center.y,
-				0, 0, 1
-			);
+				0, 0, 1));
 			graphics.color = block.color;
       graphics.fillRect(block.x,block.y,block.size,block.size);
+			graphics.popTransformation();
     }
 		graphics.end();
 	}
