@@ -10,13 +10,15 @@ Puis lancer la commmande de compilation en spécifiant la plateforme [html5, fla
 
 ```
 node <khaPath\make> <platform>
-=> node C:\HaxeToolkit\haxe\lib\kha\git\make html5
+Windows => node C:\HaxeToolkit\haxe\lib\kha\git\make html5
+Mac     => node /usr/local/lib/haxe/lib/kha/git/make html5
 ```
 
 Pour compiler le projet directement sur votre plateforme (osx, windows, etc...)
 ```
 node <khaPath\make> --compile
-=> node C:\HaxeToolkit\haxe\lib\kha\git\make --compile
+Windows => node C:\HaxeToolkit\haxe\lib\kha\git\make --compile
+Mac     => node /usr/local/lib/haxe/lib/kha/git/make --compile
 ```
 
 ### Liens
