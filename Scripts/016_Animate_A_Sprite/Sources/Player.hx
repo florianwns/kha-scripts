@@ -23,9 +23,9 @@ class Player extends Sprite {
 		this.y = y;
 		
 		animations = [
-			RightWalk => Animation.createRange( 0,  7,  4),
+			RightWalk 	=> Animation.createRange( 0,  7,  4),
 			LeftWalk 	=> Animation.createRange( 8, 15,  4),
-			RightIdle => Animation.createRange(16, 19,  8),
+			RightIdle 	=> Animation.createRange(16, 19,  8),
 			LeftIdle 	=> Animation.createRange(24, 27,  8)
 		];		
 		playerState = RightIdle;
