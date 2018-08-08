@@ -10,7 +10,7 @@ class Main {
 
 	public static function main(){
 		System.start({
-			title:'019_Audio_Buffer',
+			title:'019_Make_Some_Noise',
 			width:WIDTH,
 			height:HEIGHT
 		},
