@@ -17,7 +17,7 @@ haxelib setup
 
 Installer [Kode Studio](https://github.com/Kode/KodeStudio/releases)
 
-Installer la librairie Kha avec les lignes de commandes suivantes : 
+Installer la librairie Kha  : 
 ```
 git clone --recursive https://github.com/Kode/Kha.git
 ```
