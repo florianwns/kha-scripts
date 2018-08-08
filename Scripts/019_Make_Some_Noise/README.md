@@ -1,6 +1,6 @@
 # Faire un peu de bruit
 
-Petit scripts avec un generateur de 3 bruits (Blanc, Rose, Brun).
+Voici un petit script générateur de 3 bruits (Blanc, Rose, Brun).
 Ici on utilise kha.audio2
 
 ```
