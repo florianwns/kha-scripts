@@ -19,11 +19,7 @@ Installer [Kode Studio](https://github.com/Kode/KodeStudio/releases)
 
 Installer la librairie Kha avec les lignes de commandes suivantes : 
 ```
-haxelib git kha https://github.com/Kode/Kha/
-cd C:\HaxeToolkit\haxe\lib\kha\git\
-git init 
-git submodule
-git submodule foreach --recursive git pull origin master
+git clone --recursive https://github.com/Kode/Kha.git
 ```
 
 Dans Kode Studio : 
