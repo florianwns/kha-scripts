@@ -30,7 +30,7 @@ class Button {
 		graphics.color = color;
 		graphics.fillRect(x,y,width,height);
 		if(isClicked){
-			graphics.color = Color.Yellow;
+			graphics.color = Color.Red;
 			graphics.drawRect(x,y,width,height,2);
 		}
 	}

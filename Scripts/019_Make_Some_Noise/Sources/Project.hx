@@ -15,7 +15,7 @@ class Project {
 		noiseGenerator = new NoiseGenerator();
 		Audio.audioCallback = noiseGenerator.render;
 		var arColor = [0xff222222,Color.White,Color.Pink,0xff625c27];
-		arButton = [for(i in 0...arColor.length) new Button(10 , 10 + i * 30, 200, 30, arColor[i])];
+		arButton = [for(i in 0...arColor.length) new Button(10 , 10 + (i * 40), 200, 30, arColor[i])];
 		arButton[0].callback = function(){ noiseGenerator.setNoise(Noise.None); };
 		arButton[1].callback = function(){ noiseGenerator.setNoise(Noise.White); };
 		arButton[2].callback = function(){ noiseGenerator.setNoise(Noise.Pink); };
