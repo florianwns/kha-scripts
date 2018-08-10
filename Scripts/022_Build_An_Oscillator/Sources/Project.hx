@@ -30,10 +30,13 @@ class Project {
 	}
 
 	public function onMouseMove(x:Int, y:Int, cx:Int, cy:Int){
-		var freqMin = 20;
-		var freqMax = 1000;
+		var frequency = computeFrequency(x);
+		oscillator.setFrequency(frequency);
+	}
+
+	public function computeFrequency(x:Int, ?min:Float = 20, max:Float = 800):Float{
 		var width = System.windowWidth();
 		var ratio = Math.min(width,Math.max(0,x)) / width;
-		oscillator.targetFrequency = freqMin + (freqMax - freqMin) * ratio;
+		return min + (max - min) * ratio;
 	}
 }

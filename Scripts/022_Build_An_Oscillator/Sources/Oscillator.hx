@@ -7,53 +7,70 @@ import kha.Color;
 import kha.System;
 import kha.arrays.Float32Array;
 
-enum OscillatorType{
+enum TypeOSC{
 	Sine;
 	Square;
+	SawTooth;
+	Triangle;
 }
 
 class Oscillator {
-	public var currentSampleRate:Float;
-	public var currentAngle:Float;
-	public var angleDelta:Float;
-	public var currentFrequency:Float;
-	public var targetFrequency:Float;
-	public var bufferData:Float32Array;
-	public var type:OscillatorType;
+	private var sampleRate:Float = 48000;
+	private var delta:Float = 0.0;
+	private var freq0:Float; // current frequency
+	private var freq1:Float; // target frequency
+	private var data:Float32Array;
+	private var type:TypeOSC = Sine;
+	private var t:Float = 0;
 
 	public function new(?frequency:Float = 0){
-		this.type = OscillatorType.Sine;
-		this.currentSampleRate = 48000;
-		this.currentAngle = 0.0;
-		this.angleDelta = 0.0;
-		this.currentFrequency  = frequency;
-		this.targetFrequency   = frequency;
-		updateAngleDelta();
+		this.freq0  = frequency;
+		this.freq1  = frequency;
+		update();
 	}
 
 	public function changeType(){
-		this.type = (this.type == OscillatorType.Sine)? OscillatorType.Square : OscillatorType.Sine;
-	}
-
-
-	public function updateAngleDelta(){
-		var cyclesPerSample:Float = this.currentFrequency  / this.currentSampleRate;
-		this.angleDelta = cyclesPerSample * 2 * Math.PI;
-	}
-
-	public function getCurrentSample():Float{
-		var currentSample = Math.sin(currentAngle);			
-		if(this.type == OscillatorType.Square){
-			currentSample = (currentSample >= 0)? 1 : -1;
+		switch(this.type){
+			case Sine 		: this.type = Square;
+			case Square 	: this.type = SawTooth;
+			case SawTooth : this.type = Triangle;
+			case Triangle : this.type = Sine;
+			default 			: return;
 		}
-		return currentSample;
 	}
 
-	public function writeCurrentSample(buffer:Buffer, currentSample:Float):Void{
-		buffer.data.set(buffer.writeLocation, currentSample);
-		buffer.writeLocation += 1;
-		buffer.data.set(buffer.writeLocation, currentSample);
-		buffer.writeLocation += 1;
+	public function setFrequency(frequency:Float){
+		this.freq1  = frequency;
+	}
+
+	private function update(?refresh = false){
+		if(refresh) {
+			delta = freq0  / sampleRate;
+		}
+		t += delta;
+	}
+
+	private inline static function sign(value:Float):Float {
+		return (value >= 0)? 1 : -1;
+	}
+
+	private function getValue():Float{
+		var value = 0.0;
+		switch(this.type){
+			case Sine 		: value = Math.sin(2 * Math.PI * t);
+			case Square 	: value = sign(Math.sin(2 * Math.PI * t));
+			case SawTooth : value = 1 - 4 * Math.abs(Math.round(t - 0.25) - (t - 0.25));
+			case Triangle : value = 2 * (t - Math.floor(t + 0.5));
+			default 			: 
+		}
+		return value;
+	}
+
+	public function setValue(buffer:Buffer, value:Float):Void{
+		for(i in 0...buffer.channels){
+			buffer.data.set(buffer.writeLocation, value);
+			buffer.writeLocation += 1;
+		}
 		if (buffer.writeLocation >= buffer.size) {
 			buffer.writeLocation = 0;
 		}
@@ -61,39 +78,35 @@ class Oscillator {
 
 	public function nextAudioBlock(samples:Int, buffer:Buffer){
 		var nbSamples = Std.int(samples/buffer.channels);	
-		var localTargetFrequency = this.targetFrequency;
-		if(this.targetFrequency != this.currentFrequency)
+		if(freq1 != freq0)
 		{
-			var frequencyIncrement = (localTargetFrequency - this.currentFrequency) / nbSamples;
-
+			var freqIncr = (freq1 - freq0) / nbSamples;
 			for (i in 0 ... nbSamples) {
-				var currentSample = getCurrentSample();
-				this.currentFrequency += frequencyIncrement;
-				updateAngleDelta();
-				this.currentAngle += angleDelta;
-				writeCurrentSample(buffer,currentSample);
+				setValue(buffer,getValue());
+				freq0 += freqIncr;
+				update(true);
 			}
-
-			this.currentFrequency = localTargetFrequency;
+			freq0 = freq1;
 		}
 		else
 		{
 			for (i in 0 ... nbSamples) {
-				var currentSample = getCurrentSample();
-				this.currentAngle += angleDelta;
-				writeCurrentSample(buffer,currentSample);
+				setValue(buffer,getValue());
+				update();
 			}
 		}
 
-		this.bufferData = buffer.data;
+		data = buffer.data;
 	}
+
+
 
 	public inline static function getY(y:Float, height:Int):Float {
 			return ((-1 * y) + 1) * height / 2;
 	}
 
 	public function render(graphics:Graphics){
-		if(this.bufferData == null){
+		if(this.data == null){
 			return;
 		}
 
@@ -104,16 +117,15 @@ class Oscillator {
 		var i:Int = 0;
 		var y1:Float = 0.0;
 		var y2:Float = 0.0;
-		var ratioWidth = this.bufferData.length / width;		
+		var ratioWidth = data.length / width;		
 		var pos = 0;
 		while(i < width) {
 			pos = Std.int(i * ratioWidth);
-			if(pos >= this.bufferData.length) break;
-
+			if(pos >= data.length) break;
 			if(i == 0){
-				y1 = getY(this.bufferData[pos], height);
+				y1 = getY(data[pos], height);
 			}
-			y2 = getY(this.bufferData[pos], height);
+			y2 = getY(data[pos], height);
 			graphics.drawLine(i,y1,i++,y2);			
 			y1 = y2;
 		}
@@ -121,6 +133,6 @@ class Oscillator {
 		graphics.color = Color.Red;
 		graphics.font = Assets.fonts.OpenSans;
 		graphics.fontSize = 20;
-		graphics.drawString("Frequency : " +  this.currentFrequency +" Hz", 10, 10);		
+		graphics.drawString("Frequency : " +  freq0 +" Hz", 10, 10);		
 	}
 }
