@@ -7,6 +7,11 @@ import kha.Color;
 import kha.System;
 import kha.arrays.Float32Array;
 
+enum OscillatorType{
+	Sine;
+	Square;
+}
+
 class Oscillator {
 	public var currentSampleRate:Float;
 	public var currentAngle:Float;
@@ -14,8 +19,10 @@ class Oscillator {
 	public var currentFrequency:Float;
 	public var targetFrequency:Float;
 	public var bufferData:Float32Array;
+	public var type:OscillatorType;
 
 	public function new(?frequency:Float = 0){
+		this.type = OscillatorType.Sine;
 		this.currentSampleRate = 48000;
 		this.currentAngle = 0.0;
 		this.angleDelta = 0.0;
@@ -24,9 +31,32 @@ class Oscillator {
 		updateAngleDelta();
 	}
 
+	public function changeType(){
+		this.type = (this.type == OscillatorType.Sine)? OscillatorType.Square : OscillatorType.Sine;
+	}
+
+
 	public function updateAngleDelta(){
 		var cyclesPerSample:Float = this.currentFrequency  / this.currentSampleRate;
 		this.angleDelta = cyclesPerSample * 2 * Math.PI;
+	}
+
+	public function getCurrentSample():Float{
+		var currentSample = Math.sin(currentAngle);			
+		if(this.type == OscillatorType.Square){
+			currentSample = (currentSample >= 0)? 1 : -1;
+		}
+		return currentSample;
+	}
+
+	public function writeCurrentSample(buffer:Buffer, currentSample:Float):Void{
+		buffer.data.set(buffer.writeLocation, currentSample);
+		buffer.writeLocation += 1;
+		buffer.data.set(buffer.writeLocation, currentSample);
+		buffer.writeLocation += 1;
+		if (buffer.writeLocation >= buffer.size) {
+			buffer.writeLocation = 0;
+		}
 	}
 
 	public function nextAudioBlock(samples:Int, buffer:Buffer){
@@ -37,17 +67,11 @@ class Oscillator {
 			var frequencyIncrement = (localTargetFrequency - this.currentFrequency) / nbSamples;
 
 			for (i in 0 ... nbSamples) {
-				var currentSample = Math.sin(currentAngle);
+				var currentSample = getCurrentSample();
 				this.currentFrequency += frequencyIncrement;
 				updateAngleDelta();
 				this.currentAngle += angleDelta;
-				buffer.data.set(buffer.writeLocation, currentSample);
-				buffer.writeLocation += 1;
-				buffer.data.set(buffer.writeLocation, currentSample);
-				buffer.writeLocation += 1;
-				if (buffer.writeLocation >= buffer.size) {
-					buffer.writeLocation = 0;
-				}
+				writeCurrentSample(buffer,currentSample);
 			}
 
 			this.currentFrequency = localTargetFrequency;
@@ -55,15 +79,9 @@ class Oscillator {
 		else
 		{
 			for (i in 0 ... nbSamples) {
-				var currentSample = Math.sin(currentAngle);
+				var currentSample = getCurrentSample();
 				this.currentAngle += angleDelta;
-				buffer.data.set(buffer.writeLocation, currentSample);
-				buffer.writeLocation += 1;
-				buffer.data.set(buffer.writeLocation, currentSample);
-				buffer.writeLocation += 1;
-				if (buffer.writeLocation >= buffer.size) {
-					buffer.writeLocation = 0;
-				}
+				writeCurrentSample(buffer,currentSample);
 			}
 		}
 

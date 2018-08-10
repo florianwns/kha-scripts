@@ -12,7 +12,7 @@ class Project {
 	public function new() {
 		oscillator = new Oscillator();
 		Audio.audioCallback = oscillator.nextAudioBlock;
-		Mouse.get().notify(null, null, onMouseMove, null);
+		Mouse.get().notify(onMouseDown, null, onMouseMove, null);
 	}
 
 	public function update():Void {
@@ -23,6 +23,10 @@ class Project {
 		graphics.begin();
 		oscillator.render(graphics);
 		graphics.end();
+	}
+
+	public function onMouseDown(button:Int, x:Int, y:Int){
+		if(button ==0) oscillator.changeType();
 	}
 
 	public function onMouseMove(x:Int, y:Int, cx:Int, cy:Int){
