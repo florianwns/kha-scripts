@@ -67,7 +67,7 @@ class Oscillator {
 			}
 		}
 
-		this.bufferData = buffer.data.subarray(0,buffer.data.length);
+		this.bufferData = buffer.data;
 	}
 
 	public inline static function getY(y:Float, height:Int):Float {
