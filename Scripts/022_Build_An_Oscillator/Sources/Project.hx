@@ -26,7 +26,7 @@ class Project {
 	}
 
 	public function onMouseMove(x:Int, y:Int, cx:Int, cy:Int){
-		var freqMin = 100;
+		var freqMin = 20;
 		var freqMax = 1000;
 		var width = System.windowWidth();
 		var ratio = Math.min(width,Math.max(0,x)) / width;

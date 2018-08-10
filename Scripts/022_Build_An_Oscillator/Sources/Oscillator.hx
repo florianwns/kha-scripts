@@ -4,6 +4,8 @@ import kha.audio2.Buffer;
 import kha.graphics2.Graphics;
 import kha.Assets;
 import kha.Color;
+import kha.System;
+import kha.arrays.Float32Array;
 
 class Oscillator {
 	public var currentSampleRate:Float;
@@ -11,6 +13,7 @@ class Oscillator {
 	public var angleDelta:Float;
 	public var currentFrequency:Float;
 	public var targetFrequency:Float;
+	public var bufferData:Float32Array;
 
 	public function new(?frequency:Float = 0){
 		this.currentSampleRate = 48000;
@@ -63,12 +66,43 @@ class Oscillator {
 				}
 			}
 		}
+
+		this.bufferData = buffer.data.subarray(0,buffer.data.length);
+	}
+
+	public inline static function getY(y:Float, height:Int):Float {
+			return ((-1 * y) + 1) * height / 2;
 	}
 
 	public function render(graphics:Graphics){
+		if(this.bufferData == null){
+			return;
+		}
+
 		graphics.color = Color.White;
+		var width = System.windowWidth();
+		var height = System.windowHeight();
+
+		var i:Int = 0;
+		var y1:Float = 0.0;
+		var y2:Float = 0.0;
+		var ratioWidth = this.bufferData.length / width;		
+		var pos = 0;
+		while(i < width) {
+			pos = Std.int(i * ratioWidth);
+			if(pos >= this.bufferData.length) break;
+
+			if(i == 0){
+				y1 = getY(this.bufferData[pos], height);
+			}
+			y2 = getY(this.bufferData[pos], height);
+			graphics.drawLine(i,y1,i++,y2);			
+			y1 = y2;
+		}
+
+		graphics.color = Color.Red;
 		graphics.font = Assets.fonts.OpenSans;
 		graphics.fontSize = 20;
-		graphics.drawString("Frequency : " +  this.currentFrequency +" Hz", 10, 10);
+		graphics.drawString("Frequency : " +  this.currentFrequency +" Hz", 10, 10);		
 	}
 }
