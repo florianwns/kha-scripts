@@ -1,6 +1,7 @@
 package;
 
 import kha.Framebuffer;
+import kha.System;
 
 import nape.space.Space;
 import nape.geom.Vec2;
@@ -12,7 +13,7 @@ class Project {
 	private var space:Space;
 	private var arBlock:Array<Block>;
 	private var ball:Ball;
-	private var lastTime:Float;
+	private var time:Float;
 
 	public function new(width:Int,height:Int){
 		space = new Space(new Vec2(0,400));
@@ -28,10 +29,19 @@ class Project {
 		];
 
 		ball = new Ball(space,width/2-100,-10,16);		
+
+		time = System.time;
+	}
+
+	public function getDeltaTime():Float{
+		var newTime = System.time;
+		var deltaTime = newTime - time;
+		time = newTime;
+		return deltaTime;
 	}
 
 	public function update():Void {
-		space.step(1/60);
+		space.step(getDeltaTime());
 		ball.update();
 	}
 
