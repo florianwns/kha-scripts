@@ -21,7 +21,7 @@ class Project {
 				space, 
 				(i%2 == 0) ? width/2 - 150 : width/2 + 150, 
 				100 + i * 100, 
-				350, 
+				300, 
 				10, 
 				(i%2 == 0) ? Math.random() / 2 + 0.2 : - Math.random() / 2 - 0.2
 			)
@@ -32,7 +32,6 @@ class Project {
 
 	public function update():Void {
 		space.step(1/60);
-
 		ball.update();
 	}
 

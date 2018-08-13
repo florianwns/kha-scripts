@@ -15,6 +15,7 @@ class Block{
 	private var shape:Polygon;
 	private var width:Float;
 	private var height:Float;
+	private var color:Color = Color.White;
 
 	public function new(space:Space, ?x:Float =0, ?y:Float=0, ?width:Float=16, ?height:Float=16, ?angle:Float=0){
 		this.width = width;
@@ -29,7 +30,7 @@ class Block{
 	}
 
 	public function render(graphics:Graphics){
-		graphics.color = Color.White;
+		graphics.color = color;
 		graphics.pushRotation(body.rotation, body.position.x, body.position.y);
 		graphics.fillRect(body.position.x - width / 2, body.position.y - height / 2, width, height);
 		graphics.popTransformation();
