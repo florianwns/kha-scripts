@@ -2,9 +2,12 @@ package;
 
 import kha.Framebuffer;
 import kha.System;
-import kha.Scheduler;
+import kha.graphics2.Graphics;
 import kha.Color;
+import kha.Assets;
 import kha.input.Mouse;
+import kha.Scheduler;
+
 import CircleArray;
 
 class Project {
@@ -13,6 +16,7 @@ class Project {
 	public var arColor:Array<Color> = [Color.White, Color.Cyan, Color.Purple, Color.Green];
 	public var amplitude:Float = 0;
 	public var amplitudeTarget:Float = 0;
+	public var realTime:Float;
 
 	public function new(){
 		arGetY = [
@@ -24,6 +28,8 @@ class Project {
 		arCircleArray = [for(i in 0...arGetY.length) new CircleArray()];
 
 		Mouse.get().notify(null,null,onMouseMove,null);
+
+		realTime = Scheduler.realTime();
 	}
 
 	public function update():Void {
@@ -48,9 +54,20 @@ class Project {
 		}		
 	}
 
+	public function drawFPS(graphics:Graphics){
+		var newTime = Scheduler.realTime();
+		var FPS = Std.int(1/(newTime - realTime));
+		realTime = Scheduler.realTime();
+		graphics.color = Color.Red;
+		graphics.font = Assets.fonts.OpenSans;
+		graphics.fontSize = 20;
+		graphics.drawString("FPS : " + FPS, 10, 10);
+	}
+
 	public function render(framebuffer:Framebuffer):Void {
 		var graphics = framebuffer.g2;
 		graphics.begin();
+		drawFPS(graphics);
 		var i = 0;
 		for(arCircle in arCircleArray){
 			graphics.color = arColor[i++ % arColor.length];
