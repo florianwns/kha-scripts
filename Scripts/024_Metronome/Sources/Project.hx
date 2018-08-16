@@ -9,7 +9,7 @@ class Project {
 	}
 
 	public function update():Void {
-		metronome.update();
+	//	metronome.update();
 	}
 
 	public function render(framebuffer:Framebuffer):Void {
