@@ -13,7 +13,7 @@ La précision est donc nettement meilleure.
 
 ### Liste des évolutions
 
-Au niveau des fonctionnalités, j'aimerais que l'on puisse : 
+Au niveau des fonctionnalités futures : 
 - Changer de son
 - Taper le tempo sur l'écran au clic ou touch
 - Ajouter le pan et le volume
