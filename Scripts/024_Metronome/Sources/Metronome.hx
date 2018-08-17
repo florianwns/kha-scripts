@@ -33,8 +33,8 @@ class Metronome{
 		setBpm(120);
 		Audio.audioCallback = this.init;
 
-		downBeatBuffer 	= Assets.sounds.Logic_Metronome.uncompressedData;
-		upBeatBuffer 		= Assets.sounds.Logic_MetronomeUp.uncompressedData;
+		downBeatBuffer 	= Assets.sounds.Cubase_Metronome.uncompressedData;
+		upBeatBuffer 		= Assets.sounds.Cubase_MetronomeUp.uncompressedData;
 	}
 
 	public function init(samples:Int, buffer:Buffer){
@@ -73,7 +73,7 @@ class Metronome{
 			if(playBeat == true){
 				var tmpBuffer = (beats[beatIndex])? upBeatBuffer : downBeatBuffer;
 				setBufferSample(buffer, tmpBuffer[beatBufferIndex]);
-				beatBufferIndex += 1;
+				beatBufferIndex += 2; // Always 2 Channels by Sound => /kha/Sound.hx:28
 				if(beatBufferIndex >= tmpBuffer.length){
 					beatBufferIndex = 0;
 					playBeat = false;

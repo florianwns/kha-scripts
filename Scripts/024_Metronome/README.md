@@ -10,13 +10,13 @@ La précision est donc nettement meilleure.
 
 ### Bugs 
 
-- La lecture des samples ne prend pas en compte leur vitesse d'échantillonage.
 
 ### Liste des évolutions
 
 Au niveau des fonctionnalités, j'aimerais que l'on puisse : 
 - Changer de son
 - Taper le tempo sur l'écran au clic ou touch
+- Ajouter le pan et le volume
 - Renseigner le tempo de manière numérique (chiffre à virgule)
 - Incrémenter le tempo en faisant un slide
 - Avoir le nom des tempos en italien avec leur correspondance.
