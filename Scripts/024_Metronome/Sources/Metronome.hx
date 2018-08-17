@@ -8,25 +8,33 @@ import kha.graphics2.Graphics;
 import kha.arrays.Float32Array;
 import kha.Assets;
 
+
+// https://fr.wikipedia.org/wiki/Tempo
+
 class Metronome{
+	private var beats:Array<Bool>; // True is UpBeat, False is DownBeat
+	private var beatIndex = 0;
+	private var playBeat:Bool = true;
+
+	private var downBeatBuffer:kha.arrays.Float32Array;	
+	private var upBeatBuffer:kha.arrays.Float32Array;	
+	private var beatBufferIndex:Int = 0;
+	
 	private var bpm:Float;
 	private var interval:Float;
 	private var time:Float;
 	private var timeIncr:Float;
 	private var samplesPerSecond:Int;
-	private var metronomeBuffer:kha.arrays.Float32Array;
-	private var metronomeIndex:Int;
-	private var play:Bool;
+	
 
 	public function new(){
-		setBpm(60);
+		beats = [for(i in 0...4) i == 0];
+		trace(beats);
+		setBpm(120);
 		Audio.audioCallback = this.init;
 
-		metronomeBuffer = Assets.sounds.Ableton_Metronome.uncompressedData;
-		metronomeIndex = 0;
-
-		//this.audioChannel = Audio.play(Assets.sounds.Ableton_Metronome, false);
-		//this.audioChannel.pause();
+		downBeatBuffer 	= Assets.sounds.Logic_Metronome.uncompressedData;
+		upBeatBuffer 		= Assets.sounds.Logic_MetronomeUp.uncompressedData;
 	}
 
 	public function init(samples:Int, buffer:Buffer){
@@ -34,7 +42,14 @@ class Metronome{
 		Audio.audioCallback = nextSample;
 		time = 0;
 		timeIncr = 1 / samplesPerSecond;
-		play = true;
+	}
+
+	private function updateBeat(){
+		beatIndex = (beatIndex + 1) % beats.length;
+		playBeat = true;
+		beatBufferIndex = 0;
+		time = 0;		
+		trace(beatIndex);
 	}
 
 	private function setBufferSample(buffer:Buffer, value:Float):Void{
@@ -50,24 +65,22 @@ class Metronome{
 	public function nextSample(samples:Int, buffer:Buffer){
 		var nbSamples = Std.int(samples/buffer.channels);
 		for (i in 0 ... nbSamples) {
-			time += timeIncr;
 			if(time >= interval){
-				time = 0;
-				metronomeIndex = 0;
-				play = true;
+				updateBeat();
 			}
+			time += timeIncr;			
 
-			if(play == true){
-				setBufferSample(buffer, metronomeBuffer[metronomeIndex]);
-				metronomeIndex += 1;
-				if(metronomeIndex >= metronomeBuffer.length){
-					metronomeIndex = 0;
-					play = false;
+			if(playBeat == true){
+				var tmpBuffer = (beats[beatIndex])? upBeatBuffer : downBeatBuffer;
+				setBufferSample(buffer, tmpBuffer[beatBufferIndex]);
+				beatBufferIndex += 1;
+				if(beatBufferIndex >= tmpBuffer.length){
+					beatBufferIndex = 0;
+					playBeat = false;
 				}	
 			}else{
 				setBufferSample(buffer, 0);
 			}
-			
 		}
 	}
 
