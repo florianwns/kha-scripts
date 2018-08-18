@@ -29,7 +29,6 @@ class Metronome{
 
 	public function new(){
 		beats = [for(i in 0...4) i == 0];
-		trace(beats);
 		setBpm(120);
 		Audio.audioCallback = this.init;
 
@@ -49,7 +48,6 @@ class Metronome{
 		playBeat = true;
 		beatBufferIndex = 0;
 		time = 0;		
-		trace(beatIndex);
 	}
 
 	private function setBufferSample(buffer:Buffer, value:Float):Void{
