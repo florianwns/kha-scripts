@@ -12,7 +12,10 @@ class Main {
 		System.start({
 			title:'024_Metronome',
 			width:WIDTH,
-			height:HEIGHT
+			height:HEIGHT,
+			framebuffer: {
+				samplesPerPixel: 4,
+			}
 		},
 		function(_){
 			Assets.loadEverything(function(){
