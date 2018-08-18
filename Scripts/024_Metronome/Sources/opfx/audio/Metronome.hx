@@ -1,6 +1,5 @@
-package;
+package opfx.audio;
 
-import kha.Sound;
 import kha.audio2.Audio;
 import kha.audio2.Buffer;
 import kha.System;
@@ -8,9 +7,7 @@ import kha.graphics2.Graphics;
 import kha.arrays.Float32Array;
 import kha.Assets;
 
-
 // https://fr.wikipedia.org/wiki/Tempo
-
 class Metronome{
 	private var beats:Array<Bool>; // True is UpBeat, False is DownBeat
 	private var beatIndex = 0;
@@ -26,12 +23,12 @@ class Metronome{
 	private var timeIncr:Float;
 	private var samplesPerSecond:Int;
 	
+	private var tapTimes:Array<Float> = [];
 
 	public function new(){
 		beats = [for(i in 0...4) i == 0];
-		setBpm(120);
+		updateBpm(120);
 		Audio.audioCallback = this.init;
-
 		downBeatBuffer 	= Assets.sounds.Cubase_Metronome.uncompressedData;
 		upBeatBuffer 		= Assets.sounds.Cubase_MetronomeUp.uncompressedData;
 	}
@@ -89,11 +86,29 @@ class Metronome{
 		}
 	}
 
-	public function setBpm(bpm:Float):Void {
+	public function updateBpm(bpm:Float):Void {
 		this.bpm = bpm;
 		this.interval = 60 / bpm;
 	}
 
+	public function getTempo():Float {
+		return this.bpm;
+	}
+
 	public function render(graphics:Graphics):Void {
 	}
+	
+	public function tapTempo():Void{
+		tapTimes.unshift(System.time);
+		if(tapTimes.length < 3) return;
+		else if(tapTimes.length > 5) tapTimes.pop();
+		
+		var avgDelta:Float = 0;
+		for(i in 0...tapTimes.length - 1){
+			avgDelta += tapTimes[i] - tapTimes[i+1];
+		}
+		avgDelta /= (tapTimes.length - 1);
+		updateBpm(60 /avgDelta);
+	}
+
 }
